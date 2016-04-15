@@ -263,7 +263,7 @@ Don't use this page directly, pass #symbolId to get redirected.
 <body class=""solutionExplorerBody"">
     <div>
         <div class=""note"">
-            Enter a type or member name or <a href=""/#q=assembly%20"" target=""_top"" class=""blueLink"" onclick=""populateSearchBox('assembly '); return false;"">filter the assembly list</a>.
+            Enter a type or member name or <a href=""#q=assembly%20"" target=""_top"" class=""blueLink"" onclick=""populateSearchBox('assembly '); return false;"">filter the assembly list</a>.
         </div>
     </div>
 <div id=""rootFolder"" style=""display: none;"" class=""folderTitle"">");
@@ -334,7 +334,7 @@ Don't use this page directly, pass #symbolId to get redirected.
 <body onload=""onResultsLoad();"">
 <div id=""symbols"">
 <div class=""note"">
-Enter a type or member name or <a href=""/#q=assembly%20"" target=""_top"" class=""blueLink"" onclick=""populateSearchBox('assembly '); return false;"">filter the assembly list</a>.
+Enter a type or member name or <a href=""#q=assembly%20"" target=""_top"" class=""blueLink"" onclick=""populateSearchBox('assembly '); return false;"">filter the assembly list</a>.
 </div>
 <div class=""resultGroup"">
 ";

@@ -38,7 +38,7 @@ namespace Microsoft.SourceBrowser.HtmlGenerator
             var displayName = GetDisplayName();
             var assemblyName = GetAssemblyName();
 
-            var url = "/#" + assemblyName + "/" + displayName.Replace('\\', '/');
+            var url = Configuration.BasePath + "#" + assemblyName + "/" + displayName.Replace('\\', '/');
 
             var file = string.Format("File: <a id=\"filePath\" class=\"blueLink\" href=\"{0}\" target=\"_top\">{1}</a><br/>", url, displayName);
             var row = string.Format("<tr><td>{0}</td></tr>", file);

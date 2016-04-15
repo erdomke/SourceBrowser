@@ -635,7 +635,7 @@ namespace Microsoft.SourceBrowser.HtmlGenerator
 
         private static string GetAbsoluteLink(string symbolId, string assemblyName)
         {
-            return "/" + assemblyName + "/" + Constants.IDResolvingFileName + ".html#" + symbolId;
+            return Configuration.BasePath + assemblyName + "/" + Constants.IDResolvingFileName + ".html#" + symbolId;
         }
 
         private string ProjectDestinationFolder

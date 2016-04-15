@@ -95,7 +95,7 @@ namespace Microsoft.SourceBrowser.HtmlGenerator
 
         public string GetUrl()
         {
-            return "/" + AssemblyName + "/a.html#" + Serialization.ULongToHexString(ID);
+            return Configuration.BasePath + AssemblyName + "/a.html#" + Serialization.ULongToHexString(ID);
         }
 
         public override bool Equals(object obj)

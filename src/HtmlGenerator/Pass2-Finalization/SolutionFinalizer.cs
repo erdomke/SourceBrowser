@@ -310,6 +310,15 @@ namespace Microsoft.SourceBrowser.HtmlGenerator
             sourcePath = Path.GetFullPath(sourcePath);
             FileUtilities.CopyDirectory(sourcePath, destinationFolder);
 
+            // Update scripts.js based on the configured 'Base Path'
+            var destScript = new FileInfo(Path.Combine(destinationFolder, "scripts.js"));
+            if (destScript.Exists)
+            {
+                var lines = File.ReadAllLines(destScript.FullName);
+                lines[0] = string.Format("var basePath = \"{0}\";", Configuration.BasePath);
+                File.WriteAllLines(destScript.FullName, lines);
+            }
+
             StampOverviewHtmlWithDate(destinationFolder);
             if (emitAssemblyList) ToggleSolutionExplorerOff(destinationFolder);
 

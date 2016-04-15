@@ -31,6 +31,19 @@ namespace Microsoft.SourceBrowser.HtmlGenerator
                     continue;
                 }
 
+                if (arg.StartsWith("/base:"))
+                {
+                    Configuration.BasePath = arg.Substring("/base:".Length)
+                        .StripQuotes()
+                        .Replace('\\', '/')
+                        .Trim('/');
+                    if (string.IsNullOrEmpty(Configuration.BasePath))
+                        Configuration.BasePath = "/";
+                    else
+                        Configuration.BasePath = "/" + Configuration.BasePath + "/";
+                    continue;
+                }
+
                 if (arg.StartsWith("/in:"))
                 {
                     string inputPath = arg.Substring("/in:".Length).StripQuotes();
@@ -141,6 +154,7 @@ namespace Microsoft.SourceBrowser.HtmlGenerator
                 + @"[/out:<outputdirectory>] "
                 + @"<pathtosolution1.csproj|vbproj|sln> [more solutions/projects..] "
                 + @"[/in:<filecontaingprojectlist>] "
+                + @"[/base:<basePathOnWebServer>] "
                 + @"[/assemblylist]");
         }
 

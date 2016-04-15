@@ -163,9 +163,9 @@ namespace Microsoft.SourceBrowser.HtmlGenerator
         private string GenerateHeader(Action<string> writeLine)
         {
             string documentDisplayName = documentRelativeFilePathWithoutHtmlExtension;
-            string documentUrl = "/#" + Document.Project.AssemblyName + "/" + documentRelativeFilePathWithoutHtmlExtension.Replace('\\', '/');
+            string documentUrl = Configuration.BasePath + "#" + Document.Project.AssemblyName + "/" + documentRelativeFilePathWithoutHtmlExtension.Replace('\\', '/');
             string projectDisplayName = projectGenerator.ProjectSourcePath;
-            string projectUrl = "/#" + Document.Project.AssemblyName;
+            string projectUrl = Configuration.BasePath + "#" + Document.Project.AssemblyName;
 
             string documentLink = string.Format("File: <a id=\"filePath\" class=\"blueLink\" href=\"{0}\" target=\"_top\">{1}</a><br/>", documentUrl, documentDisplayName);
             string projectLink = string.Format("Project: <a id=\"projectPath\" class=\"blueLink\" href=\"{0}\" target=\"_top\">{1}</a> ({2})", projectUrl, projectDisplayName, projectGenerator.AssemblyName);
