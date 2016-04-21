@@ -80,6 +80,26 @@ namespace Microsoft.SourceBrowser.HtmlGenerator
                     SymbolDisplayMiscellaneousOptions.UseAsterisksInMultiDimensionalArrays |
                     SymbolDisplayMiscellaneousOptions.UseErrorTypeSymbolName);
 
+        public static readonly SymbolDisplayFormat MediumNameFormat =
+            new SymbolDisplayFormat(
+                globalNamespaceStyle: SymbolDisplayGlobalNamespaceStyle.OmittedAsContaining,
+                typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameOnly,
+                propertyStyle: SymbolDisplayPropertyStyle.NameOnly,
+                genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
+                memberOptions:
+                    SymbolDisplayMemberOptions.IncludeParameters |
+                    SymbolDisplayMemberOptions.IncludeContainingType |
+                    SymbolDisplayMemberOptions.IncludeExplicitInterface,
+                parameterOptions:
+                    SymbolDisplayParameterOptions.IncludeParamsRefOut |
+                    SymbolDisplayParameterOptions.IncludeType,
+                // Not showing the name is important because we visit parameters to display their
+                // types.  If we visited their types directly, we wouldn't get ref/out/params.
+                miscellaneousOptions:
+                    SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers |
+                    SymbolDisplayMiscellaneousOptions.UseAsterisksInMultiDimensionalArrays |
+                    SymbolDisplayMiscellaneousOptions.UseErrorTypeSymbolName);
+
         public static readonly SymbolDisplayFormat ShortNameFormat =
             new SymbolDisplayFormat(
                 globalNamespaceStyle: SymbolDisplayGlobalNamespaceStyle.Omitted,

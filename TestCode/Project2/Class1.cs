@@ -2,8 +2,16 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
+/// <summary>
+/// Various extension methods
+/// </summary>
 public static class Extensions
 {
+    /// <summary>
+    /// A method which extends a string
+    /// </summary>
+    /// <param name="s">String to extend</param>
+    [System.ComponentModel.DisplayName("My Extension Method"), System.ComponentModel.Description("Some description here")]
     public static void ExtensionMethod(this string s) { }
 }
 
@@ -106,10 +114,16 @@ class Abc : I1
 
 class A
 {
+
+    /// <summary>
+    /// Perform the message M
+    /// </summary>
+    [System.ComponentModel.DisplayName("My Awesome Method")]
     public virtual void M()
     {
     }
 
+    [System.ComponentModel.Description("The name of object A")]
     public abstract string Name
     {
         get;
@@ -143,4 +157,12 @@ class B : A, System.ICloneable
     }
 
     protected internal override event Action Event;
+}
+
+namespace ParentNs.ChildNs
+{
+    class NamespaceClass
+    {
+
+    }
 }

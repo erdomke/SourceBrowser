@@ -159,12 +159,14 @@
     <Compile Include="Pass2-Finalization\ProjectFinalizer.cs" />
     <Compile Include="Pass2-Finalization\ProjectFinalizer.Declarations.cs" />
     <Compile Include="Pass2-Finalization\ProjectFinalizer.References.cs" />
+    <Compile Include="Pass2-Finalization\SandCastleBuilder.cs" />
     <Compile Include="Pass2-Finalization\SolutionFinalizer.cs" />
     <Compile Include="Pass2-Finalization\SolutionFinalizer.SolutionExplorer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="SolutionInfo.cs" />
     <Compile Include="Utilities\Constants.cs" />
     <Compile Include="Utilities\DeclaredSymbolInfo.cs" />
+    <Compile Include="Utilities\Extensions.cs" />
     <Compile Include="Utilities\FirstChanceExceptionHandler.cs" />
     <Compile Include="Utilities\Folder`1.cs" />
     <Compile Include="Utilities\Glyph.cs" />
@@ -1244,6 +1246,15 @@
     <Content Include="TypeScriptSupport\lib.d.ts">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Web\classes.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Web\classSearch.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Web\list.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="..\..\Common.targets" />
   <PropertyGroup>

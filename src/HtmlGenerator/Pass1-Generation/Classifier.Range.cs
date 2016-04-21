@@ -5,6 +5,7 @@ namespace Microsoft.SourceBrowser.HtmlGenerator
 {
     public partial class Classification
     {
+        [System.Diagnostics.DebuggerDisplay("{Text}, {ClassificationType}")]
         public class Range
         {
             public ClassifiedSpan ClassifiedSpan;

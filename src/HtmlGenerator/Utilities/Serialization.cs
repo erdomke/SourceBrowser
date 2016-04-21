@@ -198,6 +198,35 @@ namespace Microsoft.SourceBrowser.HtmlGenerator
                         Serialization.WriteDeclaredSymbol(writer, declaredSymbol, huffman);
                     }
                 }
+
+                using (var fileStream = new FileStream(
+                    Path.Combine(outputPath, "classes.html"),
+                    FileMode.Create,
+                    FileAccess.Write,
+                    FileShare.None,
+                    262144,
+                    FileOptions.SequentialScan))
+                using (var writer = new StreamWriter(fileStream))
+                {
+                    writer.Write("<html><head><title>Classes</title><link rel=\"stylesheet\" href=\"styles.css\" /></head><body><ul>");
+                    writer.WriteLine();
+
+                    foreach (var declaredSymbol in declaredSymbols.Where(s => s.Kind == "class"))
+                    {
+                        writer.Write("<li><a href=\"");
+                        writer.Write(declaredSymbol.GetUrl());
+                        writer.Write("\" target=\"s\"><div class=\"resultItem\"><div class=\"resultLine\"><img src=\"");
+                        writer.Write(Configuration.BasePath);
+                        writer.Write("content/icons/0.png\" height=\"16\" width=\"16\"><div class=\"resultKind\">class</div><div class=\"resultName\">");
+                        writer.Write(Markup.HtmlEscape(declaredSymbol.Name));
+                        writer.Write("</div></div><div class=\"resultDescription\">");
+                        writer.Write(Markup.HtmlEscape(declaredSymbol.Description));
+                        writer.Write("</div></div></a></li>");
+                        writer.WriteLine();
+                    }
+
+                    writer.Write("</ul></body></html>");
+                }
             }
         }
 

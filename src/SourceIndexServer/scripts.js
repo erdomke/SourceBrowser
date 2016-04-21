@@ -1,4 +1,4 @@
-﻿var basePath = "/";
+var basePath = "/help/dev/source/ct/";
 var currentSelection = null;
 var currentResult = null;
 var useSolutionExplorer = /*USE_SOLUTION_EXPLORER*/true/*USE_SOLUTION_EXPLORER*/;
@@ -589,6 +589,8 @@ function onSearchChange() {
         }
     } else {
         loadSearchResults("<div class='note'>Enter at least 3 characters.</div>");
+        if (typeof(top.n.window.classList) !== "undefined")
+          top.n.window.classList.search();
     }
 }
 
@@ -610,7 +612,11 @@ function getUrl(url, callback) {
     xhr.open("GET", url, true);
     xhr.setRequestHeader("Accept", "text/html");
     xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4) {
+        if (xhr.status == 404 && typeof(top.n.window.classList) !== "undefined")
+        {
+            top.n.window.classList.search(searchBox.value);
+        }
+        else if (xhr.readyState == 4) {
             var data = xhr.responseText;
             if (typeof data === "string" && data.length > 0) {
                 callback(data);

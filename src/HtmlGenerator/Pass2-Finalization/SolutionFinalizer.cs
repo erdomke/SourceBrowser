@@ -93,7 +93,7 @@ namespace Microsoft.SourceBrowser.HtmlGenerator
             SortProcessedAssemblies();
             WriteSolutionExplorer(solutionExplorerRoot);
             CreateReferencesFiles();
-            CreateMasterDeclarationsIndex();
+            var declaredSymbols = CreateMasterDeclarationsIndex();
             CreateProjectMap();
             CreateReferencingProjectLists();
             WriteAggregateStats();
@@ -108,11 +108,11 @@ namespace Microsoft.SourceBrowser.HtmlGenerator
                 var sorter = GetCustomRootSorter();
                 assemblyNames.Sort(sorter);
 
-                Markup.GenerateResultsHtmlWithAssemblyList(SolutionDestinationFolder, assemblyNames);
+                Markup.GenerateResultsHtmlWithAssemblyList(SolutionDestinationFolder, assemblyNames, declaredSymbols);
             }
             else
             {
-                Markup.GenerateResultsHtml(SolutionDestinationFolder);
+                Markup.GenerateResultsHtml(SolutionDestinationFolder, declaredSymbols);
             }
         }
 
@@ -393,7 +393,7 @@ namespace Microsoft.SourceBrowser.HtmlGenerator
                 projects.ToDictionary(p => p.AssemblyId, p => p.ReferencingAssemblies.Count));
         }
 
-        public void CreateMasterDeclarationsIndex(string outputPath = null)
+        public IList<DeclaredSymbolInfo> CreateMasterDeclarationsIndex(string outputPath = null)
         {
             var declaredSymbols = new List<DeclaredSymbolInfo>();
             ////var declaredTypes = new List<DeclaredSymbolInfo>();
@@ -420,6 +420,7 @@ namespace Microsoft.SourceBrowser.HtmlGenerator
 
             Serialization.WriteDeclaredSymbols(declaredSymbols, outputPath ?? SolutionDestinationFolder);
             ////NamespaceExplorer.WriteNamespaceExplorer(declaredTypes, outputPath ?? rootPath);
+            return declaredSymbols;
         }
     }
 }

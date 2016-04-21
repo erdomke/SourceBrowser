@@ -248,8 +248,7 @@ Don't use this page directly, pass #symbolId to get redirected.
 <link rel=""stylesheet"" href=""../styles.css"">
 <script src=""../scripts.js""></script>
 </head><body class=""projectExplorerBody"">
-<div class=""tabChannel""><span class=""activeTab"">Project</span><a class=""inactiveTab"" href=""/#{0},namespaces"" target=""_top"">Namespaces</a></div>
-", projectTitle);
+<div class=""tabChannel""><span class=""activeTab"">Project</span><a class=""inactiveTab"" href=""{1}#{0},namespaces"" target=""_top"">Namespaces</a></div>", projectTitle, Configuration.BasePath);
         }
 
         public static void WriteProjectExplorerSuffix(StringBuilder sb)
@@ -280,8 +279,7 @@ Don't use this page directly, pass #symbolId to get redirected.
 <link rel=""stylesheet"" href=""{0}styles.css"">
 <script src=""{0}scripts.js""></script>
 </head><body class=""namespaceExplorerBody"">
-<div class=""tabChannel""><a class=""inactiveTab"" href=""/#{1}"" target=""_top"">Project</a><span class=""activeTab"">Namespaces</span></div>
-", pathPrefix, assemblyName));
+<div class=""tabChannel""><a class=""inactiveTab"" href=""{2}#{1}"" target=""_top"">Project</a><span class=""activeTab"">Namespaces</span></div>", pathPrefix, assemblyName, Configuration.BasePath));
         }
 
         public static void WriteNamespaceExplorerSuffix(StreamWriter sw)
@@ -297,17 +295,17 @@ Don't use this page directly, pass #symbolId to get redirected.
 </head><body></body></html>", assemblyName);
         }
 
-        public static void GenerateResultsHtml(string solutionDestinationFolder)
+        public static void GenerateResultsHtml(string solutionDestinationFolder, IEnumerable<DeclaredSymbolInfo> symbols)
         {
             var sb = new StringBuilder();
 
             sb.AppendLine(GetResultsHtmlPrefix());
-            sb.AppendLine(GetResultsHtmlSuffix(emitSolutionBrowserLink: false));
+            sb.AppendLine(GetResultsHtmlSuffix(false, symbols));
 
             File.WriteAllText(Path.Combine(solutionDestinationFolder, "results.html"), sb.ToString());
         }
 
-        public static void GenerateResultsHtmlWithAssemblyList(string solutionDestinationFolder, IEnumerable<string> assemblyList)
+        public static void GenerateResultsHtmlWithAssemblyList(string solutionDestinationFolder, IEnumerable<string> assemblyList, IEnumerable<DeclaredSymbolInfo> symbols)
         {
             var sb = new StringBuilder();
 
@@ -320,7 +318,7 @@ Don't use this page directly, pass #symbolId to get redirected.
                 sb.AppendLine();
             }
 
-            sb.AppendLine(GetResultsHtmlSuffix(emitSolutionBrowserLink: true));
+            sb.AppendLine(GetResultsHtmlSuffix(true, symbols));
 
             File.WriteAllText(Path.Combine(solutionDestinationFolder, "results.html"), sb.ToString());
         }
@@ -328,7 +326,7 @@ Don't use this page directly, pass #symbolId to get redirected.
         public static string GetResultsHtmlPrefix()
         {
             return @"<!DOCTYPE html><html><head><title>Results</title>
-<link rel=""stylesheet"" href=""styles.css"" />
+<link rel=""stylesheet"" href=""styles.css"" /><link rel=""stylesheet"" href=""classes.css"" />
 <script src=""scripts.js""></script>
 </head>
 <body onload=""onResultsLoad();"">
@@ -340,13 +338,35 @@ Enter a type or member name or <a href=""#q=assembly%20"" target=""_top"" class=
 ";
         }
 
-        public static string GetResultsHtmlSuffix(bool emitSolutionBrowserLink)
+        public static string GetResultsHtmlSuffix(bool emitSolutionBrowserLink, IEnumerable<DeclaredSymbolInfo> symbols)
         {
-            var solutionExplorerLink = emitSolutionBrowserLink
+            var builder = new StringBuilder(@"</div></div>");
+            builder.Append(emitSolutionBrowserLink
                 ? @"<div class=""note"">Try also browsing the <a href=""solutionexplorer.html"" class=""blueLink"">solution explorer</a>.</div>"
-                : null;
+                : "");
+            builder.AppendLine();
+            builder.Append("<div id=\"class-list\"><ul class=\"list\">");
 
-            return @"</div></div>" + solutionExplorerLink + @"</body></html>";
+            var classes = (from s in symbols
+                           where (s.Glyph < 6 || (s.Glyph >= 48 && s.Glyph <= 53)) && !s.Name.StartsWith("<")
+                           select s).ToArray();
+
+            foreach (var declaredSymbol in classes)
+            {
+                builder.Append("<li><a href=\"");
+                builder.Append(declaredSymbol.GetUrl());
+                builder.Append("\" target=\"s\"><div class=\"resultItem\"><div class=\"resultLine\"><img src=\"");
+                builder.Append(Configuration.BasePath);
+                builder.Append("content/icons/0.png\" height=\"16\" width=\"16\"><div class=\"resultKind\">class</div><div class=\"resultName\">");
+                builder.Append(Markup.HtmlEscape(declaredSymbol.Name));
+                builder.Append("</div></div><div class=\"resultDescription\">");
+                builder.Append(Markup.HtmlEscape(declaredSymbol.Description));
+                builder.Append("</div></div></a></li>");
+                builder.AppendLine();
+            }
+            builder.AppendLine(@"</ul></div><script src=""list.min.js""></script><script src=""classSearch.js""></script>");
+            builder.Append(@"</body></html>");
+            return builder.ToString();
         }
 
         private static string partialTypeDisambiguationFileTemplate = @"<!DOCTYPE html>

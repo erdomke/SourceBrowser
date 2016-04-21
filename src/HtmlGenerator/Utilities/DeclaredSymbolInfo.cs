@@ -1,8 +1,10 @@
 ﻿using System;
 using Microsoft.CodeAnalysis;
+using System.Diagnostics;
 
 namespace Microsoft.SourceBrowser.HtmlGenerator
 {
+    [DebuggerDisplay("{Kind}, {Name}, {AssemblyName}")]
     public class DeclaredSymbolInfo : IEquatable<DeclaredSymbolInfo>
     {
         public ushort AssemblyNumber;

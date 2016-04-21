@@ -152,6 +152,7 @@ namespace Microsoft.SourceBrowser.HtmlGenerator
                     GenerateUsedReferencedAssemblyList();
                     GenerateProjectExplorer();
                     GenerateNamespaceExplorer();
+                    await GenerateSandcastle();
                     GenerateIndex();
                 }
             }
@@ -176,6 +177,13 @@ namespace Microsoft.SourceBrowser.HtmlGenerator
             var symbols = this.DeclaredSymbols.Keys.OfType<INamedTypeSymbol>()
                 .Select(s => new DeclaredSymbolInfo(s, this.AssemblyName));
             NamespaceExplorer.WriteNamespaceExplorer(this.AssemblyName, symbols, ProjectDestinationFolder);
+        }
+
+        private async Task GenerateSandcastle()
+        {
+            Log.Write("Sandcastle Documentation...");
+            var symbols = this.DeclaredSymbols.Keys;
+            await SandCastleBuilder.Write(this, symbols, ProjectDestinationFolder);
         }
 
         private Task GenerateDocument(Document document)

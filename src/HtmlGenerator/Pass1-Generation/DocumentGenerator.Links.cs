@@ -55,6 +55,7 @@ namespace Microsoft.SourceBrowser.HtmlGenerator
             }
 
             var declaredSymbol = SemanticModel.GetDeclaredSymbol(token.Parent);
+            //declaredSymbol.GetDocumentationCommentXml();, declaredSymbol.GetAttributes()[0].ConstructorArguments[0];
             if (declaredSymbol is IParameterSymbol && text == "this")
             {
                 // it's a 'this' in the first parameter of an extension method - we don't want it to
